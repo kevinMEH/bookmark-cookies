@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>Cookie Formatter</h1>
+    <textarea id="textarea" cols="80" rows="15" placeholder="Copy and paste cookies into here from Dev Tools."></textarea>
+    <br>
+    <textarea id="ignore" cols="40" rows="3" placeholder="Place fields you want to ignore here, separated by a single space. All lowercase. Available options are: domain path expiry secure samesite"></textarea>
+    <br>
+    <button id="submit">Get Bookmark</button>
+    <br>
+    <code id="result" style="padding-top: 50px; display: block;">
+    </code>
+    <script>
+        let submit = document.getElementById("submit");
+        let textarea = document.getElementById("textarea");
+        let ignore = document.getElementById("ignore");
+        let result = document.getElementById("result");
+        
+        submit.onclick = () => {
+            result.innerText = formatCookies(textarea.value, ignore.value.trim().split(" "));
+        }
+
+        function formatCookies(cookieString, ignore = []) {
+            let cookies = cookieString.split("\n");
+            if(cookies[cookies.length - 1] == "") cookies.pop();
+            let finalString = "javascript:";
+            for(let cookie of cookies) {
+                let fields = cookie.split("\t");
+                let cookieString = "";
+                let name = fields[0], 
+                    value = fields[1], 
+                    domain = fields[2], 
+                    path = fields[3], 
+                    expiry = fields[4], 
+                    secure = fields[7], 
+                    sameSite = fields[8];
+                
+                cookieString += name + "=" + value + ";"
+                if(!ignore.includes("domain")) {
+                    cookieString += "domain=" + domain + ";";
+                }
+                if(!ignore.includes("path") && path != "") {
+                    cookieString += "path=" + path + ";";
+                }
+                if(!ignore.includes("expiry") && expiry != "") {
+                    cookieString += "expires=" + expiry + ";";
+                }
+                if(!ignore.includes("secure") && secure != "") {
+                    cookieString += "secure;";
+                }
+                if(!ignore.includes("samesite") && sameSite != "") {
+                    cookieString += "samesite=" + sameSite + ";";
+                }
+                finalString += "document.cookie=\'" + cookieString + "\';"
+            }
+            return finalString;
+        }
+    </script>
+</body>
