@@ -2,6 +2,10 @@
 
 This is a website that helps you format and inject cookies onto a page using JavaScript.
 
+Test site: https://kevinmeh.github.io/bookmark-cookies/test.html
+
+Generate: https://kevinmeh.github.io/bookmark-cookies/generate.html
+
 ## How to Use
 
 1. Open up Developer Tools on the website you wish to take cookies from. Navigate to the `Application` panel and select the website from the `Cookies` drop down.
